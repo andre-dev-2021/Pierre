@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: pierre
+  profiles:
+    default: dev
+  jpa:
+    open-in-view: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
