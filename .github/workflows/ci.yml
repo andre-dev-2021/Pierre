@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -20,8 +20,10 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: maven
+          cache-dependency-path: src/backend/pierre/pom.xml
 
       - name: Build e testes
+        working-directory: src/backend/pierre
         run: mvn --batch-mode verify
 
       - name: Publicar relatório JaCoCo
@@ -29,4 +31,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: target/site/jacoco/
+          path: src/backend/pierre/target/site/jacoco/
