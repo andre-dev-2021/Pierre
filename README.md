@@ -30,8 +30,6 @@ Você pode contribuir por meio de **issues**. Você pode:
 - Sugerir melhorias ou novas ideias;
 - Tirar dúvidas.
 
-> **Obs.**: por enquanto, não aceitamos pull requests.
-
 ## Autoria
 
 Este projeto está sendo desenvolvido por:
