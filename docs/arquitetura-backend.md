@@ -13,7 +13,7 @@
 | Linguagem e build | Java 21 com Maven, usando o Maven Wrapper | Padrão do ecossistema Spring; o grupo tem máquinas com Java 21 e com Java 26, então a versão é fixada no `pom.xml` | Decidido |
 | Acesso a dados | Spring Data JPA; esquema gerado pelo Hibernate no H2; Flyway entra junto com o MariaDB | Menos configuração em 15 dias; a tabela `usuarios` é a única do incremento | Decidido                                                                                                                                                                                                                              |
 | API | REST em JSON, prefixo `/api/v1`, OpenAPI com springdoc | Sem front-end, o Swagger UI é a forma de demonstrar o incremento | Decidido |
-| Autenticação | Sessão no servidor (cookie), Spring Security, BCrypt; login com Google depois | O timeout de 30 minutos do RNF05 vira uma linha de configuração, sem refresh token | Decidido |
+| Autenticação | Sessão no servidor (cookie), Spring Security e BCrypt; somente e-mail e senha nesta entrega | O timeout de 30 minutos do RNF05 vira uma linha de configuração, sem refresh token | Decidido |
 | Dependência entre módulos | Combinação do grupo, sem ArchUnit | O grupo não tem familiaridade com os pacotes que o ArchUnit exige | Decidido |
 | Modelo de dados | Tabela `usuarios` completa, com as colunas do DER | É a única tabela que o login e o cadastro precisam | Decidido para o incremento |
 | Contêineres | Dockerfile e docker-compose com MariaDB | Sem MariaDB no incremento, não há o que subir | Adiado |
@@ -52,7 +52,7 @@ São sete módulos que cobrem os 13 requisitos funcionais, e só `identidade` en
 
 | Módulo | Responsabilidade | RFs | Tabelas principais | Em 19/11 |
 | --- | --- | --- | --- | --- |
-| `identidade` | Cadastro, login, login com Google, sessão, exclusão de conta (LGPD) | RF01, RF02, RNF09 | `usuarios` | Cadastro e login |
+| `identidade` | Cadastro, login por e-mail e senha, sessão, exclusão de conta (LGPD) | RF01, RF02, RNF09 | `usuarios` | Cadastro e login |
 | `diagnostico` | Questionário inicial por área, percentual de acerto, recomendação de trilhas | RF03, RF04 | `diagnosticos`, perguntas, respostas | Não |
 | `catalogo` | Trilhas, conteúdos e vídeos; consulta e leitura | RF05, RF06 | `trilhas`, `conteudo`, `videos` | Não |
 | `estudo` | Ciclo de estudo de 20 minutos, contagem de tempo, sugestão de pausa | RF06, RF11 | `ciclos_estudo` | Não |
@@ -80,8 +80,7 @@ O incremento de 19/11 usa uma única tabela, `usuarios`, com todas as colunas qu
 | `cod_usuario` | Chave primária |
 | `nome` | Obrigatório (RF01) |
 | `email` | Obrigatório e único |
-| `senha_hash` | Hash BCrypt; aceita nulo, para contas criadas pelo login com Google no futuro; o serviço exige a senha no cadastro por e-mail |
-| `google_sub` | Único e aceita nulo; sem uso até o RF02 entrar |
+| `senha_hash` | Hash BCrypt; obrigatório para contas cadastradas por e-mail e senha |
 | `escolaridade` | Opcional; enum Java gravado como VARCHAR |
 | `curso` | Opcional |
 | `status` | Enum com `ATIVO`, `EXCLUSAO_SOLICITADA` e `EXCLUIDO`; o cadastro grava `ATIVO` |
@@ -113,7 +112,7 @@ A API é REST em JSON com prefixo `/api/v1`, e o OpenAPI gerado pelo springdoc �
 
 O Swagger UI (`/swagger-ui/**` e `/v3/api-docs/**`) fica liberado na configuração de segurança, porque é a demonstração do incremento.
 
-**Autenticação por sessão.** O login cria uma sessão no servidor, identificada por cookie, e o `server.servlet.session.timeout=30m` atende os 30 minutos de inatividade do RNF05 sem refresh token. O login com Google (RF02) e o JWT, se o app nativo exigir, ficam para depois. Como os controllers sempre leem o usuário do `Authentication`, a troca futura mexe na configuração de segurança e no login, não nos controllers.
+**Autenticação por sessão.** O login por e-mail e senha cria uma sessão no servidor, identificada por cookie, e o `server.servlet.session.timeout=30m` atende os 30 minutos de inatividade do RNF05 sem refresh token. Login com Google e JWT, caso o app nativo exija, estão fora do escopo atual e podem ser avaliados em uma entrega futura. Como os controllers sempre leem o usuário do `Authentication`, uma futura troca de autenticação não exige mudanças nos controllers.
 
 **Isolamento dos dados.** O id do usuário vem sempre da sessão, nunca do caminho nem do corpo da requisição. Assim não existe endpoint em que um usuário consiga pedir os dados de outro, e o teste de autorização do RNF05 fica simples de escrever.
 

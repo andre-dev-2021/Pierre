@@ -25,4 +25,5 @@ class SmokeTest {
                .andExpect(status().isOk())
                .andExpect(jsonPath("$.status").value("UP"));
     }
+
 }

@@ -71,13 +71,13 @@ Prioridades conforme a ERS: **Must** (essencial), **Should** (importante) e **Co
   2. Informa e-mail e senha.
   3. O sistema verifica a identidade.
   4. O sistema concede acesso e exibe o perfil.
-- **Alternativo:** O usuário pode selecionar “Entrar com Google”; o sistema recebe a confirmação de identidade do Google e concede acesso.
-- **Exceções:** Usuário não encontrado ou senha incorreta; falha de comunicação com Google; ou falha de conexão com o servidor. Em todos os casos, alertar e não conceder acesso.
+- **Exceções:** Usuário não encontrado ou senha incorreta; ou falha de conexão com o servidor. Em todos os casos, alertar e não conceder acesso.
 - **Critérios de aceitação:**
   - Credenciais corretas permitem acesso ao perfil.
   - Senha incorreta gera alerta e mantém o acesso bloqueado.
-  - Falha na comunicação com Google gera alerta e não concede acesso.
 - **Relacionado:** RF01.
+
+O login com Google está adiado para uma entrega futura e não faz parte do escopo atual.
 
 ### RF03 — Diagnóstico inicial por área
 
@@ -306,7 +306,7 @@ Prioridades conforme a ERS: **Must** (essencial), **Should** (importante) e **Co
 ### 5.1 Restrições de projeto e implementação
 
 - **RE01:** vídeos devem ser reproduzidos pelo player oficial do YouTube, sem armazenar os arquivos de vídeo.
-- **RE02:** autenticação Google deve usar OAuth 2.0 / OpenID Connect; o sistema não deve armazenar a senha do usuário.
+- **RE02 (adiado):** se o login com Google for implementado em uma entrega futura, deverá usar OAuth 2.0 / OpenID Connect; o sistema não deverá armazenar a senha do usuário.
 - **RE03:** tratamento de dados pessoais deve seguir a Lei nº 13.709/2018 (LGPD).
 
 ### 5.2 Suposições e dependências
@@ -322,7 +322,7 @@ Prioridades conforme a ERS: **Must** (essencial), **Should** (importante) e **Co
 - Versão web independente do sistema operacional; versão nativa para Android e iOS.
 - Navegadores: versões atuais de Google Chrome, Microsoft Edge, Mozilla Firefox e Safari.
 - Conexão com a Internet obrigatória; velocidade mínima não definida nesta versão.
-- Integrações: Google para autenticação e YouTube para reprodução de vídeo.
+- Integrações: YouTube para reprodução de vídeo. A autenticação Google está adiada para uma entrega futura.
 - Hospedagem em serviço de nuvem, com execução em contêineres.
 - Não há hardware adicional ou periféricos necessários.
 
@@ -349,7 +349,6 @@ Prioridades conforme a ERS: **Must** (essencial), **Should** (importante) e **Co
 
 | Sistema | Dados / finalidade | Protocolo e formato | Frequência |
 |---|---|---|---|
-| Google | Solicitação de autenticação; identificador da conta, nome e e-mail. | OAuth 2.0 / OpenID Connect sobre HTTPS; token JWT. | A cada cadastro ou login com Google. |
 | YouTube | Identificador do vídeo, transmissão do vídeo e eventos do player. | HTTPS; player incorporado via YouTube IFrame Player API. | A cada acesso a conteúdo em vídeo. |
 
 ## 7. Priorização e entregas
