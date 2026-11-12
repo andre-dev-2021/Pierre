@@ -22,6 +22,14 @@ O nome “Pierre” é uma referência à fórmula da área do círculo: “pi e
 - **Flashcards**: crie seu próprio material de estudo.
 - **Sugestão de pausas**: não se canse. Tire um tempo para organizar suas ideias.
 
+## E-mail de desenvolvimento local
+
+O backend usa o Mailpit como servidor SMTP de captura no perfil `dev`; as mensagens ficam locais e não são entregues a caixas reais. Instale e inicie o Mailpit separadamente antes de cadastrar um usuário. Por padrão, o SMTP usa `localhost:1025` e a interface para visualizar mensagens fica em `http://localhost:8025`.
+
+Na pasta `src/backend/pierre`, inicie o backend com `./mvnw spring-boot:run`. É possível sobrescrever as configurações usando `MAIL_HOST`, `MAIL_PORT` e `EMAIL_FROM`, ou desativar o envio usando `EMAIL_ENABLED=false`. No perfil de testes o envio fica desativado.
+
+O cadastro continua sendo criado se o SMTP estiver indisponível; a resposta HTTP 201 informa `emailEnviado: false` nesse caso.
+
 ## Como posso contribuir?
 
 Você pode contribuir por meio de **issues**. Você pode:

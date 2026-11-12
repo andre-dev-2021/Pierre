@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.pierre.pierre.identidade.UsuarioService;
 import br.com.pierre.pierre.identidade.dto.CadastroRequest;
+import br.com.pierre.pierre.identidade.dto.CadastroResponse;
 import br.com.pierre.pierre.identidade.dto.LoginRequest;
 import br.com.pierre.pierre.identidade.dto.UsuarioResponse;
 import jakarta.validation.Valid;
@@ -37,9 +38,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/auth/cadastro")
-    public ResponseEntity<Void> cadastrar(@Valid @RequestBody CadastroRequest request){
-        service.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<CadastroResponse> cadastrar(@Valid @RequestBody CadastroRequest request){
+        boolean emailEnviado = service.save(request);
+        String mensagem = emailEnviado
+                ? "Cadastro realizado e recibo enviado por e-mail."
+                : "Cadastro realizado, mas não foi possível enviar o recibo por e-mail.";
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new CadastroResponse(emailEnviado, mensagem));
     }
 
     @PostMapping("/auth/login")

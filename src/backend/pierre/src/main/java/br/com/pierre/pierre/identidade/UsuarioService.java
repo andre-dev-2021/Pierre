@@ -17,10 +17,15 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailCadastroService emailCadastroService;
 
-    public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(
+            UsuarioRepository repository,
+            PasswordEncoder passwordEncoder,
+            EmailCadastroService emailCadastroService) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.emailCadastroService = emailCadastroService;
     }
 
     public Usuario login(LoginRequest request) {
@@ -30,7 +35,7 @@ public class UsuarioService {
                 .orElseThrow(() -> new BadCredentialsException("E-mail ou senha inválidos."));
     }
 
-    public void save(CadastroRequest request) {
+    public boolean save(CadastroRequest request) {
         if (repository.existsByEmailIgnoreCase(request.email())) {
             throw new IllegalArgumentException("E-mail já cadastrado!");
         }
@@ -44,7 +49,9 @@ public class UsuarioService {
             usuario.setDataCriacao(LocalDateTime.now());
             usuario.setConsentimentoLGPDEm(LocalDateTime.now());
     
-            repository.save(usuario);
+            Usuario usuarioSalvo = repository.save(usuario);
+            // O envio ocorre após repository.save retornar, para que falha SMTP não reverta o cadastro.
+            return emailCadastroService.enviarRecibo(usuarioSalvo);
         }else{
             throw new IllegalArgumentException("É preciso aceitar os termos de consentimento!");
         }

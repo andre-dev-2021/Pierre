@@ -93,6 +93,7 @@ class UsuarioAutenticacaoTest {
                           "consentimentoLGPD": true
                         }
                         """))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.emailEnviado").value(false));
     }
 }
