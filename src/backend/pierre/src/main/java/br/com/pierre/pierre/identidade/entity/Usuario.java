@@ -1,18 +1,12 @@
 package br.com.pierre.pierre.identidade.entity;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -24,16 +18,20 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "cod_usuario")
+    private Integer codUsuario;
 
-    @Column(nullable = false)
+    @Column(name = "nome_completo", nullable = false)
     private String nomeCompleto;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "senha_hash")
     private String senhaHash;
+
+    @Column(name = "google_sub", unique = true)
+    private String googleSub;
 
     @Column
     private String escolaridade;
@@ -41,31 +39,28 @@ public class Usuario {
     @Column
     private String curso;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private Status status;
 
-    @Column
+    @Column(name = "consentimento_lgpd_em", nullable = false)
     private LocalDateTime consentimentoLGPDEm;
 
-    @Column
+    @Column(name = "versao_termos", nullable = false)
     private String versaoTermos;
 
-    @Column(nullable = false)
+    @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
 
-    @Column
+    @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    @Column
+    @Column(name = "data_exclusao")
     private LocalDateTime dataExclusao;
 
-    @PrePersist
-    public void prePersist() {
-        if (this.status == null || this.status.isBlank()) {
-            this.status = "ativo";
-        }
-        if (this.dataCriacao == null) {
-            this.dataCriacao = LocalDateTime.now();
-        }
+    public enum Status {
+        ATIVO,
+        EXCLUSAO_SOLICITADA,
+        EXCLUIDO
     }
 }
