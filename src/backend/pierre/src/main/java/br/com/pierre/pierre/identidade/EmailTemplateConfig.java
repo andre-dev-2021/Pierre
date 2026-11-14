@@ -19,14 +19,14 @@ public class EmailTemplateConfig {
         htmlResolver.setSuffix(".html");
         htmlResolver.setTemplateMode(TemplateMode.HTML);
         htmlResolver.setCharacterEncoding("UTF-8");
-        htmlResolver.setResolvablePatterns(Set.of("email/recibo-html"));
+        htmlResolver.setResolvablePatterns(Set.of("email/confirmacao-html"));
 
         ClassLoaderTemplateResolver textoResolver = new ClassLoaderTemplateResolver();
         textoResolver.setPrefix("templates/");
         textoResolver.setSuffix(".txt");
         textoResolver.setTemplateMode(TemplateMode.TEXT);
         textoResolver.setCharacterEncoding("UTF-8");
-        textoResolver.setResolvablePatterns(Set.of("email/recibo-texto"));
+        textoResolver.setResolvablePatterns(Set.of("email/confirmacao-texto"));
 
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolvers(Set.of(htmlResolver, textoResolver));

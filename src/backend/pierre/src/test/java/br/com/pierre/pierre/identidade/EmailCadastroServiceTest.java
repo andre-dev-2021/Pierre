@@ -34,12 +34,12 @@ class EmailCadastroServiceTest {
         ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
         verify(emailService).enviar(
                 eq("ana@example.com"),
-                eq("Cadastro realizado no Pierre"),
+                eq("Seja bem-vindo ao Pierre!"),
             texto.capture(),
             html.capture());
 
         assertTrue(texto.getValue().contains("Olá, <img src=x onerror=alert(1)> Ana Silva!"));
-        assertTrue(texto.getValue().contains("Este e-mail é apenas um recibo"));
+        assertTrue(texto.getValue().contains("Este e-mail é apenas uma confirmação"));
         assertTrue(html.getValue().contains("&lt;img src=x onerror=alert(1)&gt; Ana Silva"));
         assertFalse(html.getValue().contains("<img src=x onerror=alert(1)>"));
         assertTrue(html.getValue().contains("Seu cadastro na plataforma Pierre foi realizado com sucesso."));
