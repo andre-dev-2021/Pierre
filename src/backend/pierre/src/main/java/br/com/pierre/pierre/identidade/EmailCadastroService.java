@@ -1,6 +1,13 @@
 package br.com.pierre.pierre.identidade;
 
+import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.exceptions.TemplateEngineException;
 
 import br.com.pierre.pierre.compartilhado.EmailService;
 import br.com.pierre.pierre.identidade.entity.Usuario;
@@ -8,19 +15,32 @@ import br.com.pierre.pierre.identidade.entity.Usuario;
 @Service
 public class EmailCadastroService {
 
-    private final EmailService emailService;
+    private static final Logger logger = LoggerFactory.getLogger(EmailCadastroService.class);
 
-    public EmailCadastroService(EmailService emailService) {
+    private final EmailService emailService;
+    private final TemplateEngine templateEngine;
+
+    public EmailCadastroService(EmailService emailService, TemplateEngine templateEngine) {
         this.emailService = emailService;
+        this.templateEngine = templateEngine;
     }
 
-    public boolean enviarRecibo(Usuario usuario) {
-        String assunto = "Cadastro realizado no Pierre";
-        String conteudo = "Olá, " + usuario.getNomeCompleto() + "!\n\n"
-                + "Seu cadastro na plataforma Pierre foi realizado com sucesso.\n"
-                + "Este e-mail é apenas um recibo; você já pode acessar sua conta.\n\n"
-                + "Equipe Pierre";
+    public boolean enviarEmailCOnfirmacao(Usuario usuario) {
+        Context contexto = new Context(Locale.forLanguageTag("pt-BR"));
+        contexto.setVariable("nome", usuario.getNomeCompleto());
 
-        return emailService.enviar(usuario.getEmail(), assunto, conteudo);
+        try {
+            String html = templateEngine.process("email/confirmacao-html", contexto);
+            String texto = templateEngine.process("email/confirmacao-texto", contexto);
+
+            return emailService.enviar(
+                    usuario.getEmail(),
+                    "Seja bem-vindo ao Pierre!",
+                    texto,
+                    html);
+        } catch (TemplateEngineException exception) {
+            logger.warn("Falha ao renderizar o template de confirmação do cadastro.");
+            return false;
+        }
     }
 }

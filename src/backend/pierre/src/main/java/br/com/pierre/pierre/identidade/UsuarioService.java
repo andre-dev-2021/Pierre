@@ -53,7 +53,7 @@ public class UsuarioService {
     
             Usuario usuarioSalvo = repository.save(usuario);
             // O envio ocorre após repository.save retornar, para que falha SMTP não reverta o cadastro.
-            return emailCadastroService.enviarRecibo(usuarioSalvo);
+            return emailCadastroService.enviarEmailCOnfirmacao(usuarioSalvo);
         }else{
             throw new IllegalArgumentException("É preciso aceitar os termos de consentimento!");
         }
