@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.pierre.pierre.identidade.dto.CadastroRequest;
 import br.com.pierre.pierre.identidade.dto.LoginRequest;
 import br.com.pierre.pierre.identidade.entity.Usuario;
+import br.com.pierre.pierre.identidade.entity.Usuario.Status;
 import br.com.pierre.pierre.identidade.repository.UsuarioRepository;
 
 @Service
@@ -30,7 +31,7 @@ public class UsuarioService {
 
     public Usuario login(LoginRequest request) {
         return repository.findByEmailIgnoreCase(request.email())
-                .filter(candidato -> "ativo".equalsIgnoreCase(candidato.getStatus()))
+                .filter(candidato -> candidato.getStatus() == Status.ATIVO)
                 .filter(candidato -> passwordEncoder.matches(request.senha(), candidato.getSenhaHash()))
                 .orElseThrow(() -> new BadCredentialsException("E-mail ou senha inválidos."));
     }
@@ -45,13 +46,14 @@ public class UsuarioService {
             usuario.setNomeCompleto(request.nomeCompleto());
             usuario.setEmail(request.email().trim().toLowerCase(Locale.ROOT));
             usuario.setSenhaHash(passwordEncoder.encode(request.senha()));
-            usuario.setStatus("ativo");
+            usuario.setStatus(Status.ATIVO);
             usuario.setDataCriacao(LocalDateTime.now());
             usuario.setConsentimentoLGPDEm(LocalDateTime.now());
+            usuario.setVersaoTermos("v0.1");
     
             Usuario usuarioSalvo = repository.save(usuario);
             // O envio ocorre após repository.save retornar, para que falha SMTP não reverta o cadastro.
-            return emailCadastroService.enviarRecibo(usuarioSalvo);
+            return emailCadastroService.enviarEmailCOnfirmacao(usuarioSalvo);
         }else{
             throw new IllegalArgumentException("É preciso aceitar os termos de consentimento!");
         }

@@ -41,7 +41,7 @@ class UsuarioControllerTest {
     void cadastroDeveResponderCreated() throws Exception {
         when(repository.existsByEmailIgnoreCase(anyString())).thenReturn(false);
         when(repository.save(any(Usuario.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(emailCadastroService.enviarRecibo(any(Usuario.class))).thenReturn(true);
+        when(emailCadastroService.enviarEmailCOnfirmacao(any(Usuario.class))).thenReturn(true);
 
         mockMvc.perform(post("/api/v1/auth/cadastro")
                 .contentType(APPLICATION_JSON)
@@ -62,7 +62,7 @@ class UsuarioControllerTest {
     void falhaNoEmailMantemCadastroEInformaResultado() throws Exception {
         when(repository.existsByEmailIgnoreCase(anyString())).thenReturn(false);
         when(repository.save(any(Usuario.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(emailCadastroService.enviarRecibo(any(Usuario.class))).thenReturn(false);
+        when(emailCadastroService.enviarEmailCOnfirmacao(any(Usuario.class))).thenReturn(false);
 
         mockMvc.perform(post("/api/v1/auth/cadastro")
                 .contentType(APPLICATION_JSON)
@@ -87,7 +87,7 @@ class UsuarioControllerTest {
         when(repository.existsByEmailIgnoreCase("ana@example.com"))
                 .thenReturn(false, true);
         when(repository.save(any(Usuario.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(emailCadastroService.enviarRecibo(any(Usuario.class))).thenReturn(true);
+        when(emailCadastroService.enviarEmailCOnfirmacao(any(Usuario.class))).thenReturn(true);
 
         UsuarioService service = new UsuarioService(
                 repository, new BCryptPasswordEncoder(), emailCadastroService);
@@ -98,7 +98,7 @@ class UsuarioControllerTest {
 
         CadastroRequest request2 = new CadastroRequest("Ana Souza", "ana@example.com", "senha123", true);
         assertThrows(IllegalArgumentException.class, () -> service.save(request2));
-        verify(emailCadastroService, times(1)).enviarRecibo(any(Usuario.class));
+        verify(emailCadastroService, times(1)).enviarEmailCOnfirmacao(any(Usuario.class));
     }
 
     @Test
@@ -109,6 +109,6 @@ class UsuarioControllerTest {
                 "Bruno Silva", "bruno@example.com", "exemplo-senha", false);
 
         assertThrows(IllegalArgumentException.class, () -> service.save(request));
-        verify(emailCadastroService, never()).enviarRecibo(any(Usuario.class));
+        verify(emailCadastroService, never()).enviarEmailCOnfirmacao(any(Usuario.class));
     }
 }

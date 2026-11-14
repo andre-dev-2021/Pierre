@@ -12,4 +12,5 @@ spring:
 
 pierre:
   email:
-    enabled: false
+    enabled: ${EMAIL_ENABLED:true}
+    remetente: ${EMAIL_FROM:no-reply@pierre.local}

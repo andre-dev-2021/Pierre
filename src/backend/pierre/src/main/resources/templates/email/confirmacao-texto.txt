@@ -1,0 +1,7 @@
+Olá, [(${nome})]!
+
+Seu cadastro na plataforma Pierre foi realizado com sucesso.
+Este e-mail é apenas uma confirmação; você já pode acessar sua conta.
+
+Att,
+Equipe Pierre

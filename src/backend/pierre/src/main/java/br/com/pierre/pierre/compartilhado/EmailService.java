@@ -5,9 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class EmailService {
@@ -27,7 +32,7 @@ public class EmailService {
         this.remetente = remetente;
     }
 
-    public boolean enviar(String destinatario, String assunto, String conteudo) {
+    public boolean enviar(String destinatario, String assunto, String texto, String html) {
         if (!habilitado) {
             return false;
         }
@@ -38,18 +43,22 @@ public class EmailService {
             return false;
         }
 
-        SimpleMailMessage mensagem = new SimpleMailMessage();
-        mensagem.setTo(destinatario);
-        mensagem.setSubject(assunto);
-        mensagem.setText(conteudo);
-        if (remetente != null && !remetente.isBlank()) {
-            mensagem.setFrom(remetente);
-        }
-
         try {
+            MimeMessage mensagem = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(
+                    mensagem,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
+            helper.setTo(destinatario);
+            helper.setSubject(assunto);
+            helper.setText(texto, html);
+            if (remetente != null && !remetente.isBlank()) {
+                helper.setFrom(remetente);
+            }
+
             mailSender.send(mensagem);
             return true;
-        } catch (MailException exception) {
+        } catch (MailException | MessagingException exception) {
             // Não registrar endereço de e-mail: é um dado pessoal e não é necessário para diagnosticar SMTP indisponível.
             logger.warn("Falha ao enviar e-mail pelo servidor SMTP configurado.");
             return false;
