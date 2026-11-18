@@ -34,22 +34,23 @@ class EmailCadastroServiceTest {
         ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
         verify(emailService).enviar(
                 eq("ana@example.com"),
-                eq("Seja bem-vindo ao Pierre!"),
+                eq("Seja bem-vindo(a) ao Pierre!"),
             texto.capture(),
             html.capture());
 
-        assertTrue(texto.getValue().contains("Olá, <img src=x onerror=alert(1)> Ana Silva!"));
-        assertTrue(texto.getValue().contains("Este e-mail é apenas uma confirmação"));
+        assertTrue(texto.getValue().contains("Bem-vindo(a) ao Pierre, <img src=x onerror=alert(1)> Ana Silva!"));
+        assertTrue(texto.getValue().contains("O Pierre foi criado para ajudar estudantes de STEM"));
+        assertTrue(texto.getValue().contains("Estamos torcendo por você. Bons estudos!"));
+        assertTrue(html.getValue().contains("Seu próximo passo para estudar Matemática, Física e Química começa aqui."));
         assertTrue(html.getValue().contains("&lt;img src=x onerror=alert(1)&gt; Ana Silva"));
         assertFalse(html.getValue().contains("<img src=x onerror=alert(1)>"));
-        assertTrue(html.getValue().contains("Seu cadastro na plataforma Pierre foi realizado com sucesso."));
     }
 
     @Test
     void falhaDeRenderizacaoRetornaFalseSemEnviarEmail() {
         EmailService emailService = mock(EmailService.class);
         TemplateEngine templateEngine = mock(TemplateEngine.class);
-        when(templateEngine.process(eq("email/recibo-html"), any(IContext.class)))
+        when(templateEngine.process(eq("email/confirmacao-html"), any(IContext.class)))
                 .thenThrow(new TemplateInputException("Template indisponível"));
         EmailCadastroService service = new EmailCadastroService(emailService, templateEngine);
         Usuario usuario = new Usuario();

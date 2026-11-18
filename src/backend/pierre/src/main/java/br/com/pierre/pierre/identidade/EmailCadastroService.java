@@ -35,7 +35,7 @@ public class EmailCadastroService {
 
             return emailService.enviar(
                     usuario.getEmail(),
-                    "Seja bem-vindo ao Pierre!",
+                    "Seja bem-vindo(a) ao Pierre!",
                     texto,
                     html);
         } catch (TemplateEngineException exception) {

@@ -2,15 +2,103 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro realizado no Pierre</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="x-apple-disable-message-reformatting">
+		<title>Bem-vindo(a) ao Pierre! 👋</title>
+		<style>
+			body,
+			table,
+			td,
+			a {
+				-webkit-text-size-adjust: 100%;
+				-ms-text-size-adjust: 100%;
+			}
+
+			table {
+				border-collapse: collapse !important;
+			}
+
+			@media screen and (max-width: 620px) {
+				.email-container {
+					width: 100% !important;
+				}
+
+				.content-padding {
+					padding-left: 24px !important;
+					padding-right: 24px !important;
+				}
+			}
+		</style>
 </head>
-<body style="font-family: Arial, sans-serif; color: #1f2937; line-height: 1.6;">
-    <main>
-        <h1>Olá, <span th:text="${nome}">Nome</span>!</h1>
-        <p>Seu cadastro na plataforma Pierre foi realizado com sucesso.</p>
-        <p>Este e-mail é apenas uma confirmação; você já pode acessar sua conta.</p>
-        <p>Att.</p>
-        <p>Equipe Pierre</p>
-    </main>
+
+<body style="margin: 0; padding: 0; background-color: #f7f8fc; font-family: Arial, Helvetica, sans-serif; color: #17243b;">
+    <!-- Preheader: resumo exibido ao lado do assunto em muitas caixas de entrada. -->
+    <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
+        Seu próximo passo para estudar Matemática, Física e Química começa aqui.
+    </div>
+    <!-- Espaço para evitar que o restante do conteúdo apareça como preheader. -->
+    <div style="display: none; max-height: 0; overflow: hidden;">
+        &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+    </div>
+
+    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f7f8fc;">
+        <tr>
+            <td align="center" style="padding: 32px 16px;">
+                <table role="presentation" class="email-container" width="600" border="0" cellspacing="0" cellpadding="0" style="width: 600px; max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden;">
+                    <tr>
+                        <td align="center" style="padding: 28px 24px; background-color: #7045c6;">
+                            <h1 style="margin: 0 0 20px; font-family: Arial, Helvetica, sans-serif; font-size: 28px; line-height: 36px; font-weight: 700; color: #ffffff;">
+                                Bem-vindo(a) ao Pierre, <span th:text="${nome}">Nome</span>!
+                            </h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-padding" style="padding: 40px 48px 16px;">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGgT8oX41nGAj7oyjRv6NILovNP0zRC_kWotx7SUy6fj5A_YwB23VGc7Q&s=10"
+                                width="504"
+                                alt="Ilustração de boas-vindas do Pierre"
+                                style="display: block; width: 100%; max-width: 504px; height: auto; border: 0;"
+                                >
+                            <p style="margin: 0 0 16px; font-size: 16px; line-height: 26px; color: #17243b;">
+                                Que bom ter você por aqui. O Pierre foi criado para ajudar estudantes de STEM a revisar os fundamentos de Matemática, Física e Química com mais tranquilidade.
+                            </p>
+                            <p style="margin: 0 0 24px; font-size: 16px; line-height: 26px; color: #17243b;">
+                                Você pode estudar em ciclos curtos, combinando conteúdos explicativos, videoaulas e exercícios de fixação — no seu ritmo e um passo de cada vez.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-padding" style="padding: 0 48px 32px;">
+                            <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="margin: 0 auto;">
+                                <tr>
+                                    <td align="center" bgcolor="#7045c6" style="border-radius: 8px;">
+                                        <a href="#" target="_blank" style="display: inline-block; padding: 15px 28px; border: 1px solid #7045c6; border-radius: 8px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 20px; font-weight: 700; color: #ffffff; text-decoration: none;">
+                                            Começar a estudar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-padding" style="padding: 0 48px 36px;">
+                            <p style="margin: 0; font-size: 15px; line-height: 24px; color: #17243b;">
+                                Estamos torcendo por você. Bons estudos!<br>
+                                <strong style="font-weight: 700;">Equipe <span style="color: #7045c6">Pierre</span></strong>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 22px 24px; background-color: #f7f8fc; border-top: 1px solid #e5e8f0;">
+                            <p style="margin: 0; font-size: 12px; line-height: 18px; color: #657087;">
+                                Dúvidas? <a href="#" style="color: #7045c6; text-decoration: underline;">Fale com nosso suporte</a>.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

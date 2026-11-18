@@ -1,7 +1,8 @@
-Olá, [(${nome})]!
+Bem-vindo(a) ao Pierre, [(${nome})]!
 
-Seu cadastro na plataforma Pierre foi realizado com sucesso.
-Este e-mail é apenas uma confirmação; você já pode acessar sua conta.
+Que bom ter você por aqui. O Pierre foi criado para ajudar estudantes de STEM a revisar os fundamentos de Matemática, Física e Química com mais tranquilidade.
+Você pode estudar em ciclos curtos, combinando conteúdos explicativos, videoaulas e exercícios de fixação — no seu ritmo e um passo de cada vez.
 
-Att,
+Estamos torcendo por você. Bons estudos!
+
 Equipe Pierre
